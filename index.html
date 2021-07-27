@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {font-family: Arial, Helvetica, sans-serif;}
+        
+        /* The Modal (background) */
+        .modal {
+          display: none; /* Hidden by default */
+          position: fixed; /* Stay in place */
+          z-index: 1; /* Sit on top */
+          padding-top: 100px; /* Location of the box */
+          left: 0;
+          top: 0;
+          width: 100%; /* Full width */
+          height: 100%; /* Full height */
+          overflow: auto; /* Enable scroll if needed */
+          background-color: rgb(0,0,0); /* Fallback color */
+          background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        
+        /* Modal Content */
+        .modal-content {
+          background-color: #fefefe;
+          margin: auto;
+          padding: 20px;
+          border: 1px solid #888;
+          width: 80%;
+        }
+        
+        /* The Close Button */
+        .close {
+          color: #aaaaaa;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+        }
+        
+        .close:hover,
+        .close:focus {
+          color: #000;
+          text-decoration: none;
+          cursor: pointer;
+        }
+
+        .show{
+            display: block !important;
+        }
+
+        .hide{
+            display: none !important;
+        }
+        </style>
+</head>
+<body>
+    
+    <input type="button" name="btn-popup" value="Popup 1" urldata="https://mocki.io/v1/8db622f3-061b-459e-b412-04729772b767" />
+    <input type="button" name="btn-popup" value="Popup 2" urldata="https://mocki.io/v1/b7eda3aa-8388-4cc4-b558-38c2f1cc2bb0" />
+    <input type="button" name="btn-popup" value="Popup 3" urldata="https://mocki.io/v1/16c60342-f5a1-41ec-8141-9563ae2df5e2" />
+
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+        <span name="popup-close" class="close">&times;</span>
+        <p name="fetch-data"></p>
+        </div>
+    
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script>
+       $(document).ready(function(){
+
+            var popup = $('#myModal');
+
+            $('input[name=btn-popup]').on('click', function(){
+                var url = $(this).attr('urldata');
+
+                $.ajax({
+                    type:'GET',
+                    url: url,
+                    dataType: 'json',
+                    data: '',
+                    contentType: 'application/json; charset=utf-8',
+                    success:function(data, status, xhr){
+                        //var returnedData = JSON.parse(data);
+                        console.log(data['url']);
+                        popup.removeClass('hide');
+                        popup.addClass('show');
+
+                        $('p[name=fetch-data]').html(data['url']);
+                    }
+                });
+            });
+
+            $('span[name=popup-close]').on('click', function(){
+                popup.removeClass('show');
+                popup.addClass('hide');
+                $('p[name=fetch-data]').empty();
+            });
+       });
+    </script>
+</body>
+</html>
